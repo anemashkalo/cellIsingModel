@@ -1,3 +1,5 @@
+% calculates the partition function and the associated probabilities (variable np) for the two-state model
+
 function [np]= PartitionFn_AN(N,B,J)
 
 for n=0:N

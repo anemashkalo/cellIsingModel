@@ -16,11 +16,11 @@ end
 
 %frN;
 
-% vect=0:N;
-% 
-%  figure, plot(vect,(frN),'b*');
-%   
+%  vect=1:N;
+% % 
+%   figure, plot(vect,(frN),'b*');
+%    
 %  ylim([0 1]);
-%  xlim([0 N+1]);
+%   xlim([0 N+1]);
 %  title('FractionsN');
 end

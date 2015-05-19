@@ -7,7 +7,7 @@ function [fr] = Fractions_AN(N,B,J)
  %for k=0:N
      
 for n=0:N
-    expect(n+1) = ((n)/N)*np(n+1);
+    expect(n+1) = ((n)/N)*(np(n+1)); % for the opposite state data ( 'spin down'/sox2 data need to use the 1-np as probability
     
     %fr(n+1) = sum(expect);
     
