@@ -1,7 +1,26 @@
 
-function [B, J, chinew] = FittingAN_3(N,K,chithresh)
+% N - number of cells in the theoratical colony
 
-experfrac = [0.539; 0.686; 0.667; 0.6547;  0.6881; 0.6864; 0.665; 0.733; 0.673;  0.7]';% cdx2positive, 10ng/ml
+
+function [B, J, chinew] = FittingAN_3(N,K,chithresh,model)
+%-------
+% here need to call the function to generate the necessary dataset to fit
+% instead of all the stuff below
+
+  nms = {'H2Boutall10MM'}; 
+  nms2 = {'10 ng/ml'};  
+  thresh = 0.3;
+  index1 = [6 5];
+  param1 = 'cdx2';
+  plottype = 0;
+    
+  
+[experfrac] = GetDataToFit_AN(N,thresh,nms,nms2,[],[],index1,param1,plottype);
+ experfrac = experfrac';
+close all
+%--------------
+
+%experfrac = [0.539; 0.686; 0.667; 0.6547;  0.6881; 0.6864; 0.665; 0.733; 0.673;  0.7]';% cdx2positive, 10ng/ml
 %experfrac =  [0.07; 0.039; 0.029; 0.015; 0.009; 0.005; 0.006; 0.017; 0; 0]';% cdx2positive, control
 %experfrac =  [0.181; 0.168; 0.210; 0.158; 0.151; 0.131; 0.129; 0.118; 0.117; 0.128 ]';% Sox2positive,1 ng.ml
 %experfrac =  [0.870; 0.935; 0.978; 0.979; 0.973; 0.982; 0.972; 0.971; 0.978; 1]';% Sox2positive, control
@@ -12,7 +31,7 @@ experfrac = [0.539; 0.686; 0.667; 0.6547;  0.6881; 0.6864; 0.665; 0.733; 0.673; 
 %experfrac =  [0.418; 0.575; 0.570; 0.584;0.583; 0.575; 0.509; 0.539; 0.533; 0.426]';% Sox2positive, 0.1 ng/ml
 %experfrac =  [0.073; 0.072; 0.066; 0.051; 0.038; 0.023; 0.040; 0; 0 ]';% cdx2positive colonies, 10 ng/ml
 
-index='Sox2+/1 ng.ml';
+
 thresh = 0.3;
 
 
@@ -21,9 +40,8 @@ thresh = 0.3;
 
  %Jn = 0.889994;
 
-currfrac = FractionsN_AN(N,Bnew,Jnew);
-currchi = sum((currfrac-experfrac).*(currfrac-experfrac));
-
+currfrac = FractionsN_AN(N,Bnew,Jnew,model);
+currchi = sum((currfrac-experfrac).*(currfrac-experfrac));  
 
 for j=1:K
 %     if mod(j,100)==0
@@ -33,7 +51,7 @@ for j=1:K
    J = abs(Jnew + 0.01*(2*rand-1)); 
    B = Bnew + 0.01*(2*rand-1);
     
-    finfr = FractionsN_AN(N,B,J);
+    finfr = FractionsN_AN(N,B,J,model);
     chinew=sum((finfr-experfrac).*(finfr-experfrac));
    %disp([chinew currchi]);
     
@@ -55,9 +73,9 @@ for j=1:K
             figure(3),plot(finfr,'r--*');
             
             xlabel('Number of cells in the colony');
-            ylabel(['FractionOf',(index),'PositiveCells']);
+            ylabel(['FractionOf',(param1),'PositiveCells']);
             title ([B,J]);
-            xlim([0 10]);
+            xlim([0 (N+1)]);
             ylim([0 1.1]);
             break;
 

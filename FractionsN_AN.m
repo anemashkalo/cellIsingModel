@@ -1,4 +1,4 @@
-function [frN] = FractionsN_AN(N,B,J)
+function [frN] = FractionsN_AN(N,B,J,model)
 
 
 %[np]= PartitionFn_AN(N,B,J);
@@ -8,7 +8,7 @@ function [frN] = FractionsN_AN(N,B,J)
      
 for i=1:N
     
-    frN(i) = Fractions_AN(i,B,J);
+    frN(i) = Fractions_AN(i,B,J,model);
     
     %fr(n+1) = sum(expect);
     
