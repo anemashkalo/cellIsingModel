@@ -2,10 +2,10 @@
 
 function [np]= ThreeStatePartitionFn_AN(N,B,J)
 %disp('is called');
-if N <3
-    disp('not enough cells in the system');
-end
-if N>=3
+if N == 1
+ np = PartitionFn_AN(N,B,J);
+ 
+else
 
 for n=0:N
     for m=0:(N-n)
@@ -44,6 +44,7 @@ vect=0:N;
 %legend({param1,param2});
 
 end
-
-
 end
+
+
+%end
