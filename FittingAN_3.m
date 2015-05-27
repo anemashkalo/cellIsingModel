@@ -20,8 +20,8 @@ function [B, J, chinew] = FittingAN_3(N,K,chithresh)
 % close all
 %--------------
 
- experfrac = [0.539; 0.686; 0.667; 0.6547;  0.6881; 0.6864; 0.665; 0.733; 0.673;  0.7]';% cdx2positive, 10ng/ml
-%experfrac =  [0.07; 0.039; 0.029; 0.015; 0.009; 0.005; 0.006; 0.017; 0; 0]';% cdx2positive, control
+ %experfrac = [0.539; 0.686; 0.667; 0.6547;  0.6881; 0.6864; 0.665; 0.733; 0.673;  0.7]';% cdx2positive, 10ng/ml
+experfrac =  [0.07; 0.039; 0.029; 0.015; 0.009; 0.005; 0.006; 0.017; 0; 0]';% cdx2positive, control
 %experfrac =  [0.181; 0.168; 0.210; 0.158; 0.151; 0.131; 0.129; 0.118; 0.117; 0.128 ]';% Sox2positive,1 ng.ml
 %experfrac =  [0.870; 0.935; 0.978; 0.979; 0.973; 0.982; 0.972; 0.971; 0.978; 1]';% Sox2positive, control
 %experfrac =  [0.043; 0.056; 0.044; 0.061; 0.039; 0.027; 0.033; 0.014; 0.027; 0.006]';% Sox2positive, 10ng/ml
