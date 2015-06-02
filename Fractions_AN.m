@@ -10,11 +10,8 @@ function [fr] = Fractions_AN(N,B,J)
        fr=0;
       
 for n=0:N
-    %for m=0:(N-n)
-                expect(n+1) = ((n)/N)*pp(n+1);
-        %expect(n+1,m+1)= ((n)/N)*np(n+1,m+1); 
-        %end
-end
+                    expect(n+1) = ((n)/N)*pp(n+1);
+       end
 fr = sum(expect);
 % fr = sum(fr);
  

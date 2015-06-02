@@ -1,18 +1,19 @@
 
-function [binN, totalcoloniesN, np] = ExperDist_AN(nms,thresh,nms2,index,value,B,J,N)
+function [binN, totalcoloniesN, pp] = ExperDist_AN(nms,thresh,nms2,param1,index,B,J,N)
 
 %-------------------------
 
-[np]= PartitionFn_AN(N,B,J);
-% [np] = ThreeStatePartitionFuction_AN(N,B,J)
+%[np]= PartitionFn_AN(N,B,J);
+ [np] = ThreeStatePartitionFn_AN(N,B,J);
+ pp = sum(np,2);
 vect=1:N+1;
-plot(vect,np,'m--*'); legend('Calculated values');hold on % plot normalized probabilities
+plot(vect,pp,'m--*'); legend('Calculated values');hold on % plot normalized probabilities
 ylim([0 1.1]);
 xlim([0 N+1]);
 hold on
 %------------------------
 
-%   %function [ratios, ratios2, totalcells] = ColAnalysisNoutfiles(Nplot,nms,thresh,nms2,index,value)
+%
 for k=1:size(nms,2)
     
     filename{k} = ['.' filesep  nms{k} '.mat'];
@@ -23,12 +24,11 @@ for k=1:size(nms,2)
         [colonies{k}, ~]=peaksToColonies(filename);
     end
     M(k) = max([colonies{k}.ncells]);
-    
-    % [toplot,peaks] = GetSeparateQuadrantImgNumbersAN(nms2,peaks,dims,midcoord,fincoord);
+   
 end
 M = max(M);
 
-% obtaine experimental distributions ( within the colony size N)
+% obtain experimental distributions ( within the colony size N)
 
 for k=1:size(nms,2)
     
@@ -43,7 +43,7 @@ for k=1:size(nms,2)
             
             totalcolonies(nc)=totalcolonies(nc)+1;
             % totalcells(nc)=totalcells(nc)+nc;
-            X = col(ii).data(:,value)./col(ii).data(:,5)>thresh;
+            X = col(ii).data(:,index)./col(ii).data(:,5)>thresh;
             j = sum(X);
             binN(j+1)=binN(j+1)+1; % binN(j+1) contains the number of colonies, within which only j cells (out of N total cell within the colony) are gene-positive
             
@@ -62,11 +62,11 @@ for k=1:size(nms,2)
     
     binN = binN/totalcoloniesN;
     
-    plot(binN,'b*');
+    plot(binN,'b*'); legend(nms2);
     xlim([0 N+1]);
     
     xlabel('Number of cells in the colony');
-    ylabel(['Probability',(index)]);
+    ylabel(['Probability',(param1)]);
     
     
 end

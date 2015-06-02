@@ -6,17 +6,17 @@
 % specified manually within it
 
 
-function [experfrac] = GetDataToFit_AN(N,thresh,nms,nms2,midcoord,fincoord,index1,param1,plottype)
+function [experfrac] = GetDataToFit_AN(N,thresh,nms,nms2,midcoord,fincoord,index1,param1,plottype,flag)
 
 
+[~,ratios,~] = GeneralizedColonyAnalysisAN(thresh,nms,nms2,midcoord,fincoord,index1,param1,plottype,flag);
+experfrac = [];
 
-[totalcells,ratios,ratios2] = GeneralizedColonyAnalysisAN(thresh,nms,nms2,midcoord,fincoord,index1,param1,plottype);
-
-[r , ~] = find(isfinite(ratios) == 1);
-
-experfrac = zeros(N,1);
+for k=1:size(ratios,2)
+[r , ~] = find(isfinite(ratios{k}) == 1);
 
 for i=1:N
-    experfrac(i) = ratios(r(i));
+    experfrac{k}(i) = ratios{k}(r(i));
+end
 end
 end

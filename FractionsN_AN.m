@@ -1,4 +1,4 @@
-function [frN] = FractionsN_AN(N,B,J,~)
+function [frN] = FractionsN_AN(N,B,J)
 %[np]= PartitionFn_AN(N,B,J);
  frN=0;
  %for k=0:N
