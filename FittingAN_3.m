@@ -8,7 +8,7 @@ function [B, J, chinew] = FittingAN_3(N,K,chithresh,set)
 %-------------------------------
 
   nms = { 'esi017noqdratall_control(2)','esi017noqdratall_control(cdx2)','esi017noqdratall_1ngmlBMP','esi017noqdratall_10ngmlBMP'};
-  nms2 = {'control(2) ','control(1) ','1 ng/ml ','10 ng/ml'};   
+   nms2 = {'control(2) ','control(1) ','1 ng/ml ','10 ng/ml'};   
      
   thresh = 0.5;
   index1 = [6 5];
@@ -17,7 +17,7 @@ function [B, J, chinew] = FittingAN_3(N,K,chithresh,set)
   flag = 0;     
   
 
-[x] = GetDataToFit_AN(N,thresh,nms,nms2,[],[],index1,param1,plottype,flag);
+ [x] = GetDataToFit_AN(N,thresh,nms,nms2,[],[],index1,param1,plottype,flag);
 
 experfrac = x{set}; 
   
