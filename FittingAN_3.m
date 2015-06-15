@@ -4,7 +4,7 @@
 % set you want to fit, e.g., set = 1 will use the data of the nms{1} as the
 % source of the experfrac
 
-function [B, J, chinew] = FittingAN_3(N,K,chithresh,set)
+function [B, J, chinew,finfr] = FittingAN_3(N,K,chithresh,set)
 %-------------------------------
 
   nms = { 'esi017noqdratall_control(2)','esi017noqdratall_control(cdx2)','esi017noqdratall_1ngmlBMP','esi017noqdratall_10ngmlBMP'};
@@ -12,7 +12,7 @@ function [B, J, chinew] = FittingAN_3(N,K,chithresh,set)
      
   thresh = 0.5;
   index1 = [6 5];
-  param1 = 'CY5';
+  param1 = 'Cdx2';
   plottype = 0;
   flag = 0;     
   
@@ -38,7 +38,7 @@ experfrac = x{set};
  Jnew = rand;
  Bnew = rand;
 
- %Jn = 0.889994;
+ %Jnew = 2.193;% when the J parameter is fixed
 
 currfrac = FractionsN_AN(N,Bnew,Jnew);
 currchi = sum((currfrac-experfrac).*(currfrac-experfrac));  
@@ -49,9 +49,10 @@ for j=1:K
 %         disp([j currchi]);
 %     end
 
-   J = abs(Jnew + 0.01*(2*rand-1)); 
+  J = abs(Jnew + 0.01*(2*rand-1)); % comment out when the J parameter is
+ %  fixed
    B = Bnew + 0.01*(2*rand-1);
-    
+    %J = Jnew;% wne the J parameter is fixed
     finfr = FractionsN_AN(N,B,J);
     chinew=sum((finfr-experfrac).*(finfr-experfrac));
    %disp([chinew currchi]);
@@ -59,7 +60,7 @@ for j=1:K
     if chinew < currchi
         %disp('Here');
         
-        Jnew = J;
+      %  Jnew = J;
         Bnew = B;
         
         currfrac = finfr; %Fractions_AN(N,Bnew,Jnew);
