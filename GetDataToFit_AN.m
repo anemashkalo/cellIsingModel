@@ -6,10 +6,10 @@
 % specified manually within it
 
 
-function [experfrac] = GetDataToFit_AN(N,thresh,nms,nms2,midcoord,fincoord,index1,param1,plottype,flag)
+function [experfrac] = GetDataToFit_AN(N,thresh,nms,nms2,dir,midcoord,fincoord,index1,param1,plottype,flag)
 
 
-[~,ratios,~] = GeneralizedColonyAnalysisAN(thresh,nms,nms2,midcoord,fincoord,index1,param1,plottype,flag);
+[~,ratios,~] = GeneralizedColonyAnalysisAN(thresh,dir,nms,nms2,midcoord,fincoord,index1,param1,plottype,flag);
 experfrac = [];
 
 for k=1:size(ratios,2)

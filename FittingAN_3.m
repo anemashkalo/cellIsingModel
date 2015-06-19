@@ -6,18 +6,19 @@
 
 function [B, J, chinew,finfr] = FittingAN_3(N,K,chithresh,set)
 %-------------------------------
-
-  nms = { 'esi017noqdratall_control(2)','esi017noqdratall_control(cdx2)','esi017noqdratall_1ngmlBMP','esi017noqdratall_10ngmlBMP'};
+   dir = '/Users/warmflashlab/Desktop/A_NEMASHKALO_Data_and_stuff/2015-05-27-NoQuadrantsAtAll/Outall_for_NoQdrAtAll';
+   nms = { 'esi017noqdratall_control(2)','esi017noqdratall_control(cdx2)','esi017noqdratall_1ngmlBMP','esi017noqdratall_10ngmlBMP'};
    nms2 = {'control(2) ','control(1) ','1 ng/ml ','10 ng/ml'};   
      
-  thresh = 0.5;
-  index1 = [6 5];
-  param1 = 'Cdx2';
+ 
+   thresh = 2;
+  index1 = [8 5];
+  param1 = 'Sox2';
   plottype = 0;
   flag = 0;     
   
 
- [x] = GetDataToFit_AN(N,thresh,nms,nms2,[],[],index1,param1,plottype,flag);
+ [x] = GetDataToFit_AN(N,thresh,nms,nms2,dir,[],[],index1,param1,plottype,flag);
 
 experfrac = x{set}; 
   
