@@ -6,19 +6,26 @@
 
 function [B, J, chinew,finfr] = FittingAN_3(N,K,chithresh,set)
 %-------------------------------
-   dir = '/Users/warmflashlab/Desktop/A_NEMASHKALO_Data_and_stuff/2015-05-27-NoQuadrantsAtAll/Outall_for_NoQdrAtAll';
-   nms = { 'esi017noqdratall_control(2)','esi017noqdratall_control(cdx2)','esi017noqdratall_1ngmlBMP','esi017noqdratall_10ngmlBMP'};
-   nms2 = {'control(2) ','control(1) ','1 ng/ml ','10 ng/ml'};   
-     
- 
-   thresh = 2;
-  index1 = [8 5];
-  param1 = 'Sox2';
+ %dir1 =
+ %'/Users/warmflashlab/Desktop/A_NEMASHKALO_Data_and_stuff/2015-05-27-NoQuadrantsAtAll/Outall_for_NoQdrAtAll';
+dir2 = '/Users/warmflashlab/Desktop/A_NEMASHKALO_Data_and_stuff/2015-06-08-NoQuadrantsAtAll(Repeat)/RepeatOutallFiles';
+  %dir = '/Users/warmflashlab/Desktop/A_NEMASHKALO_Data_and_stuff/2015-05-27-NoQuadrantsAtAll/Outall_for_NoQdrAtAll'; 
+   %dir = '/Users/warmflashlab/Desktop/A_NEMASHKALO_Data_and_stuff/2015-05-27-NoQuadrantsAtAll/Outall_for_NoQdrAtAll';
+  % nms = { 'esi017noqdratall_control(2)','esi017noqdratall_control(cdx2)','esi017noqdratall_1ngmlBMP','esi017noqdratall_10ngmlBMP'};
+ %  nms2 = {'control(2) ','control(1) ','1 ng/ml ','10 ng/ml'};  
+   nms2 = {'Control'};
+
+    nms  = { 'esi017noQd_10ng_Repeat'}; 
+    %nms = {'esi017noqdratall_control(cdx2)'};
+  %set = 1;
+  thresh = 1.3; % 2
+  index1 = [6 5];
+  param1 = 'Cdx2';
   plottype = 0;
   flag = 0;     
   
 
- [x] = GetDataToFit_AN(N,thresh,nms,nms2,dir,[],[],index1,param1,plottype,flag);
+ [x] = GetDataToFit_AN(N,thresh,nms,nms2,dir2,[],[],index1,param1,plottype,flag);
 
 experfrac = x{set}; 
   
@@ -39,7 +46,7 @@ experfrac = x{set};
  Jnew = rand;
  Bnew = rand;
 
- %Jnew = 2.193;% when the J parameter is fixed
+ %Jnew = 0.922;% when the J parameter is fixed (2.193 - Sox2; 0.922 - cdx2)
 
 currfrac = FractionsN_AN(N,Bnew,Jnew);
 currchi = sum((currfrac-experfrac).*(currfrac-experfrac));  
@@ -53,7 +60,7 @@ for j=1:K
   J = abs(Jnew + 0.01*(2*rand-1)); % comment out when the J parameter is
  %  fixed
    B = Bnew + 0.01*(2*rand-1);
-    %J = Jnew;% wne the J parameter is fixed
+   %J = Jnew;% use when the J parameter is fixed
     finfr = FractionsN_AN(N,B,J);
     chinew=sum((finfr-experfrac).*(finfr-experfrac));
    %disp([chinew currchi]);
@@ -61,7 +68,7 @@ for j=1:K
     if chinew < currchi
         %disp('Here');
         
-      %  Jnew = J;
+        Jnew = J;
         Bnew = B;
         
         currfrac = finfr; %Fractions_AN(N,Bnew,Jnew);
