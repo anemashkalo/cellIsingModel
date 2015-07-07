@@ -1,22 +1,25 @@
 
-function [binN, totalcoloniesN, pp] = ExperDist_AN(nms,thresh,nms2,param1,index,B,J,N)
+function [binN, totalcoloniesN, pp] = ExperDist_AN(dir,nms,thresh,nms2,param1,index,B,J,N,flag)
 
 %-------------------------
 
 %[np]= PartitionFn_AN(N,B,J);
- [np] = ThreeStatePartitionFn_AN(N,B,J);
- pp = sum(np,2);
-vect=1:N+1;
+  [np] = ThreeStatePartitionFn_AN(N,B,J);
+  pp = sum(np,2);
+vect=0:N;
+if flag == 1
 plot(vect,pp,'m--*'); legend('Calculated values');hold on % plot normalized probabilities
+
 ylim([0 1.1]);
 xlim([0 N+1]);
-hold on
+%hold on
+end
 %------------------------
 
 %
 for k=1:size(nms,2)
     
-    filename{k} = ['.' filesep  nms{k} '.mat'];
+    filename{k} = [dir filesep  nms{k} '.mat'];
     
     load(filename{k},'peaks','dims','plate1');
     colonies{k} = plate1.colonies;
@@ -61,13 +64,13 @@ for k=1:size(nms,2)
     allcells = sum(totalcells);
     
     binN = binN/totalcoloniesN;
-    
-    plot(binN,'b*'); legend(nms2);
+    if flag == 1
+    plot(vect,binN,'b*'); legend(nms2);
     xlim([0 N+1]);
     
     xlabel('Number of cells in the colony');
     ylabel(['Probability',(param1)]);
-    
+    end
     
 end
 end
