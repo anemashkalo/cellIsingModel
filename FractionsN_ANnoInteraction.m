@@ -1,10 +1,10 @@
-function [frN] = FractionsN_ANnoInteraction(N)
+function [frN] = FractionsN_ANnoInteraction(N,prob)
 %[np]= PartitionFn_AN(N,B,J);
 frN=0;
 %for k=0:N
 
 for i=1:N
-    frN(i) = Fractions_ANnoInteraction(i);% uses the three-state partition function
+    frN(i) = Fractions_ANnoInteraction(i,prob);% uses the three-state partition function
      %frN(i) = Fractions_ANtwostate(i,B,J); % to use the two-state partition function
 end
 %frN;

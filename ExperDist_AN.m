@@ -1,6 +1,9 @@
 
 function [binN, totalcoloniesN, pp] = ExperDist_AN(dir,nms,thresh,nms2,param1,index,B,J,N,flag)
-
+clear binN
+clear X
+clear j
+binN = cell(1,size(nms,2));
 %-------------------------
 
 %[np]= PartitionFn_AN(N,B,J);
@@ -20,7 +23,7 @@ end
 for k=1:size(nms,2)
     
     filename{k} = [dir filesep  nms{k} '.mat'];
-    
+    disp(filename{k});
     load(filename{k},'peaks','dims','plate1');
     colonies{k} = plate1.colonies;
     if ~exist('plate1','var')
@@ -36,7 +39,7 @@ M = max(M);
 for k=1:size(nms,2)
     
     totalcolonies = zeros(N+1,1);
-    binN = zeros(N+1,1);
+    binN{k} = zeros(N+1,1);
     totalcells=zeros(N+1,1);
     col = colonies{k};
     % nc=0;
@@ -48,7 +51,7 @@ for k=1:size(nms,2)
             % totalcells(nc)=totalcells(nc)+nc;
             X = col(ii).data(:,index)./col(ii).data(:,5)>thresh;
             j = sum(X);
-            binN(j+1)=binN(j+1)+1; % binN(j+1) contains the number of colonies, within which only j cells (out of N total cell within the colony) are gene-positive
+            binN{k}(j+1)=binN{k}(j+1)+1; % binN(j+1) contains the number of colonies, within which only j cells (out of N total cell within the colony) are gene-positive
             
         end
     end
@@ -63,11 +66,10 @@ for k=1:size(nms,2)
     totalcoloniesN = nonzeros(totalcolonies);
     allcells = sum(totalcells);
     
-    binN = binN/totalcoloniesN;
+    binN{k} = binN{k}/totalcoloniesN;
     if flag == 1
     plot(vect,binN,'b*'); legend(nms2);
     xlim([0 N+1]);
-    
     xlabel('Number of cells in the colony');
     ylabel(['Probability',(param1)]);
     end
