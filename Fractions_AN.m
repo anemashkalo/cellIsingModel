@@ -7,6 +7,10 @@ function [fr] = Fractions_AN(N,B,J)
                                              %   of observing n with the corresponding m(i). 
                                              
        pp = sum(np,2); % if sum up along the second dimention will get the column vector with necessaty weights for each possible n, which can be used to calculate the expectation value below
+       
+%        [np]= PartitionFn_AN(N,B,J); % for two-state    
+%        pp = np';
+       
        fr=0;
       
 for n=0:N
