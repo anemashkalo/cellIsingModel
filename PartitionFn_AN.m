@@ -8,7 +8,7 @@ for n=0:N
     %P = P+p(n);              %  partition function    
 end
 P=sum(p); %  partition function
-np=p/P;     % normalized probability
+np=p/P;   % normalized probability
 % for n=1:N
 %   np(n)=p(n)/P ;
 % end

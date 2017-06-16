@@ -1,29 +1,27 @@
 
 function [binN, totalcoloniesN, pp] = ExperDist_AN(dir,nms,thresh,nms2,param1,index,B,J,N,flag)
+% calculate experiemnta distribution of gene positive cells within the
+% colonies of specific size N
 clear binN
 clear X
 clear j
 binN = cell(1,size(nms,2));
 %-------------------------
-
+% get theor distributions
 [np]= PartitionFn_AN(N,B,J); % for two-state    
  pp = np';
-
 %  [np] = ThreeStatePartitionFn_AN(N,B,J); % for three state
 %  pp = sum(np,2);
 vect=0:N;
 if flag == 1
 plot(vect,pp,'m--*'); legend('Calculated values');hold on % plot normalized probabilities
-
 ylim([0 1.1]);
 xlim([0 N+1]);
 %hold on
 end
 %------------------------
-
 %
-for k=1:size(nms,2)
-    
+for k=1:size(nms,2)    
     filename{k} = [dir filesep  nms{k} '.mat'];
     disp(filename{k});
     load(filename{k},'peaks','dims','plate1');
@@ -31,8 +29,7 @@ for k=1:size(nms,2)
     if ~exist('plate1','var')
         [colonies{k}, ~]=peaksToColonies(filename);
     end
-    M(k) = max([colonies{k}.ncells]);
-   
+    M(k) = max([colonies{k}.ncells]);   
 end
 M = max(M);
 % obtain experimental distributions ( within the colony size N)

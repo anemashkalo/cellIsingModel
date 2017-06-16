@@ -24,7 +24,7 @@ P = sum(P);  %   sum along the second dimention
 np = p/P;      %  normalized probability; in the case of the model with three states, this "np' is represented by a matrix (n,m)
 %-----------------------------------------------
 % this portion will just plot the firs colum of np ( probabilities for
-% possible values of n, givem m=0 (first colun of np corresponds to m =
+% possible values of n, given m=0 (first column of np corresponds to m =
 % 0)
 %  vect=0:N;
 %  figure, plot(vect,np(:,1),'r*');

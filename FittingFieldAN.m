@@ -39,15 +39,11 @@ experfrac = expermean;
    %calcmean;  is the vector of lenght 'dp'
    %which contains the values to be compared to the experimental ones
 currfrac = calcmean;
-currchi = sum((currfrac-experfrac).*(currfrac-experfrac));
-
- 
-for xx=1:K 
-    
+currchi = sum((currfrac-experfrac).*(currfrac-experfrac)); 
+for xx=1:K     
     %     if mod(j,100)==0
     %         disp([j currchi]);
-    %     end
-    
+    %     end    
     alpha = (alphanew + 0.01*(2*rand-1));
     k = (knew + 0.01*(2*rand-1));
     %k = -(knew + 0.01*(2*rand-1));
@@ -64,30 +60,23 @@ for xx=1:K
     %calcmean(j) = sum(calcmean); % this is the theoretical value for the expermean; each iteration j one value is obtained
     
 currfrac = calcmean;
-
 chinew=sum((calcmean-experfrac).*(calcmean-experfrac));
 %disp([chinew currchi]);
-
 if chinew < currchi
-    %disp('Here');
-    
+    %disp('Here');    
     alphanew = alpha;
     knew = k;
     for i=1:dp
          calcmean(i) = AnalyticalMean(conc(i),alpha,k);
     end
     currfrac = calcmean; %finfr Fractions_AN(N,Bnew,Jnew);
-    currchi = chinew;
-    
+    currchi = chinew;    
 end
-
-if  chinew < chithresh
-   
+if  chinew < chithresh   
     disp('Here');
     figure(3); plot(conc,experfrac,'b*'); %legend(nms2{set});
     hold on
-    figure(3),plot(conc,calcmean,'r--*');
-    
+    figure(3),plot(conc,calcmean,'r--*');    
     xlabel('Experimental Concentration of BMP4');
     ylabel(['Mean',(param1),'value']);
     title ([alpha,k]);
