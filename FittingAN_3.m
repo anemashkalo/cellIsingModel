@@ -1,98 +1,75 @@
 
-% N - number of cells in the theoratical colony
-% set - indicates the data you want to fit ( which dataset out of the nms2 data
-% set you want to fit, e.g., set = 1 will use the data of the nms{1} as the
-% source of the experfrac
+function [Bnew, Jnew, chinew,finfr] = FittingAN_3(N,K,chithresh,fixparam,param1,set)
 
-function [B, J, chinew,finfr] = FittingAN_3(N,K,chithresh,set)
-%-------------------------------
- %dir1 =
- %'/Users/warmflashlab/Desktop/A_NEMASHKALO_Data_and_stuff/2015-05-27-NoQuadrantsAtAll/Outall_for_NoQdrAtAll';
-dir2 = '/Users/warmflashlab/Desktop/A_NEMASHKALO_Data_and_stuff/2015-06-08-NoQuadrantsAtAll(Repeat)/RepeatOutallFiles';
-  %dir = '/Users/warmflashlab/Desktop/A_NEMASHKALO_Data_and_stuff/2015-05-27-NoQuadrantsAtAll/Outall_for_NoQdrAtAll'; 
-   %dir = '/Users/warmflashlab/Desktop/A_NEMASHKALO_Data_and_stuff/2015-05-27-NoQuadrantsAtAll/Outall_for_NoQdrAtAll';
-  % nms = { 'esi017noqdratall_control(2)','esi017noqdratall_control(cdx2)','esi017noqdratall_1ngmlBMP','esi017noqdratall_10ngmlBMP'};
- %  nms2 = {'control(2) ','control(1) ','1 ng/ml ','10 ng/ml'};  
-   nms2 = {'Control'};
+clear Jnew
+clear Bnew
+clear alphanew
+clear knew
+clear Cnew
+clear currchi
+clear alldat
+clear alldatnobmp
+clear Bnew
+clear B
+clear J
+clear Jnew
+load('bioreplicateserrors.mat');
 
-    nms  = { 'esi017noQd_10ng_Repeat'}; 
-    %nms = {'esi017noqdratall_control(cdx2)'};
-  %set = 1;
-  thresh = 1.3; % 2
-  index1 = [6 5];
-  param1 = 'Cdx2';
-  plottype = 0;
-  flag = 0;     
-  
-
- [x] = GetDataToFit_AN(N,thresh,nms,nms2,dir2,[],[],index1,param1,plottype,flag);
-
-experfrac = x{set}; 
-  
-%-------------------------------
-
- %experfrac = [0.539; 0.686; 0.667; 0.6547;  0.6881; 0.6864; 0.665; 0.733; 0.673;  0.7]';% cdx2positive, 10ng/ml
-%experfrac =  [0.07; 0.039; 0.029; 0.015; 0.009; 0.005; 0.006; 0.017; 0; 0]';% cdx2positive, control
-%experfrac =  [0.181; 0.168; 0.210; 0.158; 0.151; 0.131; 0.129; 0.118; 0.117; 0.128 ]';% Sox2positive,1 ng.ml
-%experfrac =  [0.870; 0.935; 0.978; 0.979; 0.973; 0.982; 0.972; 0.971; 0.978; 1]';% Sox2positive, control
-%experfrac =  [0.043; 0.056; 0.044; 0.061; 0.039; 0.027; 0.033; 0.014; 0.027; 0.006]';% Sox2positive, 10ng/ml
-
-%experfrac =  [0.176;0.183;0.134;0.173;0.126;0.137;0.134;0.142;0.071;0.039]';% cdx2positive, 1 ng/ml
-%experfrac =  [0.036;0.016;0.022;0.0043;0.0041;0.003;0.005;0.0012;0.0079;0.0036]';% cdx2positive, 0.1 ng/ml
-%experfrac =  [0.418; 0.575; 0.570; 0.584;0.583; 0.575; 0.509; 0.539; 0.533; 0.426]';% Sox2positive, 0.1 ng/ml
-%experfrac =  [0.073; 0.072; 0.066; 0.051; 0.038; 0.023; 0.040; 0; 0 ]';% cdx2positive colonies, 10 ng/ml
-%-------------------------------------
-
- Jnew = rand;
- Bnew = rand;
-
- %Jnew = 0.922;% when the J parameter is fixed (2.193 - Sox2; 0.922 - cdx2)
-
+a = -1;
+b = 1;
+nn = 1000;
+rpool = a + (b-a)*rand(nn,1); % to plool from random numbers between a and b
+load('bioreplicateserrors.mat','meanCsox2');%meanC_Cdx2   meanDcdx2  meanCsox2 meanDsox2
+%load('Allcdx2fractions','cdx2fr');
+alldat = cat(1,meanCsox2);% cdx2fr{set}
+experfrac = alldat';
+Jnew = rand;
+Bnew = rpool(randi(nn));
+if fixparam ==1
+    %Jnew =0; %set, if the J parameter is fixed
+     Bnew = 1.26 ;% 1.26   0.23
+end
 currfrac = FractionsN_AN(N,Bnew,Jnew);
-currchi = sum((currfrac-experfrac).*(currfrac-experfrac));  
-
-for j=1:K
-    
-%     if mod(j,100)==0
-%         disp([j currchi]);
-%     end
-
-  J = abs(Jnew + 0.01*(2*rand-1)); % comment out when the J parameter is
- %  fixed
-   B = Bnew + 0.01*(2*rand-1);
-   %J = Jnew;% use when the J parameter is fixed
-    finfr = FractionsN_AN(N,B,J);
+currchi = sum((currfrac-experfrac).*(currfrac-experfrac));
+for j=1:K            
+    B = Bnew + 0.01*rpool(randi(nn));
+    J = abs(Jnew + 0.01*(2*rand-1));    % comment out when the J fixed    
+    if fixparam == 1
+        B = Bnew;  % if  B fixed
+       % J = Jnew;  % set when the J parameter is fixed
+    end    
+    finfr = FractionsN_AN(N,B,J);    
     chinew=sum((finfr-experfrac).*(finfr-experfrac));
-   %disp([chinew currchi]);
-    
+    %disp([chinew currchi]);
     if chinew < currchi
         %disp('Here');
-        
         Jnew = J;
         Bnew = B;
-        
         currfrac = finfr; %Fractions_AN(N,Bnew,Jnew);
         currchi = chinew;
-   
-    end 
-    
-   if  chinew < chithresh
-            disp('Here');
-            figure(3); plot(experfrac,'b*'); legend(nms2{set});
-            hold on
-            figure(3),plot(finfr,'r--*');
-          
-            xlabel('Number of cells in the colony');
-            ylabel(['FractionOf',(param1),'PositiveCells']);
-            title ([B,J]);
-            xlim([0 (N+1)]);
-            ylim([0 1.1]);
-            break;
-
     end
-     chinew;
+    if  chinew < chithresh
+        disp('Here');
+        figure(10); plot(experfrac,'b.','Markersize',20,'LineWidth',2); %legend(nms2{set});
+        hold on
+        figure(10),plot(finfr,'--.','color','m','LineWidth',2);
+        h = figure(10);
+        h.CurrentAxes.FontSize = 15;
+        h.CurrentAxes.LineWidth = 2;
+        xlabel('Number of cells in the colony');
+        ylabel(['FractionOf',(param1),'PositiveCells']);
+        title ([ 'B value ' num2str(Bnew) ', J value  ' num2str(Jnew) ]);
+        xlim([0 (N+1)]);
+        ylim([0 1]);
+        break;
+    end
+    if (j == K) && (chinew < chithresh) == 0
+    Bnew=0;
+    Jnew=0;
+    chinew=0;
+    finfr=zeros(1,N);    
+    end
 end
-    
 end
 
 
